@@ -2,46 +2,38 @@
  
 
 import readlineSync from 'readline-sync'; 
-import  greetUser from '../src/cli.js'; 
 import threeRoundsGame from '../src/index.js'; 
+import generateRandomNumber from '../src/helps.js';
 
-const playerName = helloUnknownName(); 
+const rule = 'What number is missing in the progression?';
+const minLength = 5;
+const maxLength = 10;
+const minRange = 1;
+const maxRange = 100;
+const minStep = 1;
+const maxStep = 10;
 
-const arithmeticProgression = () => { 
-  console.log('What number is missing in the progression?'); 
-  const randomNumberFromZeroToFifty = 51; 
-  const randomNumberFromOneToTen = 9; 
-  const randomNumberFromZeroToTen = 10; 
-  const antiZero = 1; 
-  const randomStartsNum = Math.floor(Math.random() * randomNumberFromZeroToFifty); 
-  const randomStepUp = Math.floor(Math.random() * randomNumberFromOneToTen + antiZero); 
-  const randomPositionHide = Math.floor(Math.random() * randomNumberFromZeroToTen); 
-  const questionArr = []; 
-  let resultForGame; 
+const getProgression = (start, step, length, hiddenIndex) => {
+  const progression = Array(length).fill(0).map((_, i) => start + (step * i));
+  progression[hiddenIndex] = '..';
+  return progression.join(' ');
+};
 
+const startRound = () => {
+  const startNumber = generateRandomNumber(minRange, maxRange);
+  const step = generateRandomNumber(minStep, maxStep);
+  const length = generateRandomNumber(minLength, maxLength);
+  const hiddenIndex = generateRandomNumber(2, length - 1);
 
+  const expression = getProgression(startNumber, step, length, hiddenIndex);
+  const answer = (startNumber + step * hiddenIndex).toString();
 
-  for (let i = randomStartsNum; questionArr.length < 10; i += randomStepUp) { 
-    questionArr.push(i); 
-  } 
-  const correctAnswerToTheQuestion = questionArr[randomPositionHide]; 
-  questionArr[randomPositionHide] = '..'; 
+  return {
+    answer,
+    expression,
+  };
+};
 
-  const questionArrToStringForTZ = questionArr.join(' '); 
+const runBrainProgressionGame = () => startEngine(rule, startRound);
 
-
-
-  console.log(`Question: ${questionArrToStringForTZ}`); 
-  const playerAnswer = readlineSync.question('Your answer: '); 
-  if (playerAnswer !== correctAnswerToTheQuestion.toString()) { 
-    console.log(`'${playerAnswer}' is wrong answer ;(. Correct answer was '${correctAnswerToTheQuestion}'.\nLet's try again, ${playerName}!`); 
-    resultForGame = 'Defeat'; 
-    return resultForGame; 
-  } 
-
-  resultForGame = 'Win'; 
-  console.log('Correct!'); 
-  return resultForGame; 
-}; 
-
-threeRoundsGame(arithmeticProgression, playerName);
+export default runBrainProgressionGame;
