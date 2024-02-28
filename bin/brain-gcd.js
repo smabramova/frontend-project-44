@@ -1,25 +1,35 @@
-import threeRoundsGame from '../src/index.js'; 
-import generateRandomNumber from '../src/helps.js';
+#!/usr/bin/env node
+import getGameCommonPart from '../src/index.js';
 
-const rule = 'Find the greatest common divisor of given numbers.';
-const min = 1;
-const max = 50;
+const uniqeGameText = 'Find the greatest common divisor of given numbers.';
 
-const getNOD = (num1, num2) => (num2 === 0 ? num1 : getNOD(num2, num1 % num2));
-
-const startRound = () => {
-  const number1 = generateRandomNumber(min, max);
-  const number2 = generateRandomNumber(min, max);
-
-  const expression = `${number1} ${number2}`;
-  const answer = getNOD(number1, number2).toString();
-
-  return {
-    answer,
-    expression,
-  };
+const getRandomInteger = () => {
+  const maxNumberRange = 1000;
+  return Math.floor(Math.random() * maxNumberRange);
 };
 
-const runBrainNodGame = () => startEngine(rule, startRound);
+const getQuestion = () => {
+  const firstRandomNumber = getRandomInteger();
+  const secondRandomNumber = getRandomInteger();
+  return [`${firstRandomNumber} ${secondRandomNumber}`, firstRandomNumber, secondRandomNumber];
+};
 
-export default runBrainNodGame;
+const getNOD = (firstNumber, secondNumber) => {
+  const r = firstNumber % secondNumber;
+  if (firstNumber === 0) {
+    return secondNumber;
+  } if (secondNumber === 0) {
+    return firstNumber;
+  }
+  const result = getNOD(secondNumber, r);
+  return result;
+};
+
+const getQuestionAnswer = (numbersArr) => {
+  const firstNumber = numbersArr[1];
+  const secondNumber = numbersArr[2];
+  const nod = getNOD(firstNumber, secondNumber);
+  return String(nod);
+};
+
+getGameCommonPart(getQuestionAnswer, getQuestion, uniqeGameText);

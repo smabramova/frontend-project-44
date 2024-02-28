@@ -1,39 +1,27 @@
-#!/usr/bin/env node 
- 
+#!/usr/bin/env node
+import getGameCommonPart from '../src/index.js';
 
-import readlineSync from 'readline-sync'; 
-import threeRoundsGame from '../src/index.js'; 
-import generateRandomNumber from '../src/helps.js';
+const uniqeGameText = 'What number is missing in the progression?';
 
-const rule = 'What number is missing in the progression?';
-const minLength = 5;
-const maxLength = 10;
-const minRange = 1;
-const maxRange = 100;
-const minStep = 1;
-const maxStep = 10;
+const getRandomNumber = (max, min) => Math.floor(Math.random() * (max - min)) + min;
 
-const getProgression = (start, step, length, hiddenIndex) => {
-  const progression = Array(length).fill(0).map((_, i) => start + (step * i));
-  progression[hiddenIndex] = '..';
-  return progression.join(' ');
+const getQuestion = () => {
+  const progressionNumber = getRandomNumber(10, 1);
+  let startValueNumber = getRandomNumber(1000, 1);
+  let counter = 0;
+  const maxNumberOfValues = 10;
+  const resultArr = [];
+  while (counter < maxNumberOfValues) {
+    resultArr.push(startValueNumber);
+    startValueNumber += progressionNumber;
+    counter += 1;
+  }
+  const answerNumber = resultArr[progressionNumber - 1];
+  resultArr[progressionNumber - 1] = '..';
+  const ourQuestion = resultArr.join(' ');
+  return [ourQuestion, String(answerNumber)];
 };
 
-const startRound = () => {
-  const startNumber = generateRandomNumber(minRange, maxRange);
-  const step = generateRandomNumber(minStep, maxStep);
-  const length = generateRandomNumber(minLength, maxLength);
-  const hiddenIndex = generateRandomNumber(2, length - 1);
+const getQuestionAnswer = (questionArr) => questionArr[1];
 
-  const expression = getProgression(startNumber, step, length, hiddenIndex);
-  const answer = (startNumber + step * hiddenIndex).toString();
-
-  return {
-    answer,
-    expression,
-  };
-};
-
-const runBrainProgressionGame = () => startEngine(rule, startRound);
-
-export default runBrainProgressionGame;
+getGameCommonPart(getQuestionAnswer, getQuestion, uniqeGameText);
