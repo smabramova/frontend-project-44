@@ -3,44 +3,57 @@
 import readlineSync from 'readline-sync'; 
 import  greetUser from '../src/cli.js'; 
 import threeRoundsGame from '../src/index.js'; 
- 
-const playerName = helloUnknownName(); 
- 
-const arithmeticProgression = () => { 
-  console.log('What number is missing in the progression?'); 
-  const randomNumberFromZeroToFifty = 51; 
-  const randomNumberFromOneToTen = 9; 
-  const randomNumberFromZeroToTen = 10; 
-  const antiZero = 1; 
-  const randomStartsNum = Math.floor(Math.random() * randomNumberFromZeroToFifty); 
-  const randomStepUp = Math.floor(Math.random() * randomNumberFromOneToTen + antiZero); 
-  const randomPositionHide = Math.floor(Math.random() * randomNumberFromZeroToTen); 
-  const questionArr = []; 
-  let resultForGame; 
- 
 
- 
-  for (let i = randomStartsNum; questionArr.length < 10; i += randomStepUp) { 
-    questionArr.push(i); 
-  } 
-  const correctAnswerToTheQuestion = questionArr[randomPositionHide]; 
-  questionArr[randomPositionHide] = '..'; 
- 
-  const questionArrToStringForTZ = questionArr.join(' '); 
- 
 
- 
-  console.log(`Question: ${questionArrToStringForTZ}`); 
-  const playerAnswer = readlineSync.question('Your answer: '); 
-  if (playerAnswer !== correctAnswerToTheQuestion.toString()) { 
-    console.log(`'${playerAnswer}' is wrong answer ;(. Correct answer was '${correctAnswerToTheQuestion}'.\nLet's try again, ${playerName}!`); 
-    resultForGame = 'Defeat'; 
-    return resultForGame; 
-  } 
- 
-  resultForGame = 'Win'; 
-  console.log('Correct!'); 
-  return resultForGame; 
-}; 
- 
-threeRoundsGame(arithmeticProgression, playerName);
+const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+const generateProgression = (length, start, step) => {
+  const progression = [];
+  for (let i = 0; i < length; i += 1) {
+    progression.push(start + step * i);
+  }
+  return progression;
+};
+
+const playProgressionGame = () => {
+  console.log('Welcome to the Brain Games!');
+  const name = readlineSync.question('May I have your name? ');
+  console.log(`Hello, ${name}!`);
+  console.log('What number is missing in the progression?');
+
+  
+
+  const minStep = 1;
+  const maxStep = 10;
+  const minStart = 1;
+  const maxStart = 20;
+  const progressionLength = getRandomNumber(5, 10);
+  const hiddenElementIndex = getRandomNumber(0, progressionLength - 1);
+  const step = getRandomNumber(minStep, maxStep);
+  const start = getRandomNumber(minStart, maxStart);
+  const progression = generateProgression(progressionLength, start, step);
+  const correctAnswer = progression[hiddenElementIndex];
+  progression[hiddenElementIndex] = '..';
+  const question = progression.join(' ');
+
+  console.log(`Question: ${question}`);
+  const userAnswer = Number(readlineSync.question('Your answer: '));
+
+  if (userAnswer === correctAnswer) {
+    console.log('Correct!');
+  } else {
+    console.log(`'${userAnswer}' is wrong answer ;(. Correct answer was '${correctAnswer}'.`);
+    console.log(`Let's try again, ${name}!`);
+    return;
+  }
+
+  if (hiddenElementIndex === progressionLength - 1) {
+    console.log(`Congratulations, ${name}!`);
+    return;
+  }
+  
+  playProgressionGame();
+};
+
+export default playProgressionGame;
+
