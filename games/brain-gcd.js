@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import readlineSync from 'readline-sync';
+import helloUnknownName from '../src/cli.js';
 import getGameCommonPart from '../src/index.js';
 
 const uniqeGameText = 'Find the greatest common divisor of given numbers.';
