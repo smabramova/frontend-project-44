@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import readlineSync from 'readline-sync';
 import helloUnknownName from '../src/cli.js';
-import getGameCommonPart from '../src/index.js';
+import threeRoundsGame '../src/index.js';
 
 const uniqeGameText = 'What is the result of the expression?';
 
