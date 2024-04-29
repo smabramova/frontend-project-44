@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import getGameCommonPart from '../../src/index.js';
+import getGameCommonPart from '../src/index.js';
 
 const uniqeGameText = 'What number is missing in the progression?';
 
