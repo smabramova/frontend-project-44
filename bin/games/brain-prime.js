@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-import readlineSync from 'readline-sync';
-import helloUnknownName from '../../src/cli.js';
 import getGameCommonPart from '../../src/index.js';
 
 const uniqeGameText = 'Answer "yes" if given number is prime. Otherwise answer "no".';

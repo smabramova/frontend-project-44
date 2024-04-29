@@ -1,13 +1,34 @@
-const threeRoundsGame = (gameModule, playerName) => {
-  let resultForGame;
-  for (let i = 0; i < 3; i += 1) {
-    resultForGame = gameModule();
-    if (resultForGame === 'Defeat') {
-      return 'Lose to the Game';
+import readlineSync from 'readline-sync';
+import getUserName from './cli.js';
+
+const getGameCommonPart = (getQuestionAnswer, getQuestion, uniqeGameText) => {
+  // greetings part
+  console.log('Welcome to the Brain Games!');
+
+  const userName = getUserName();
+  console.log(`Hello, ${userName}!`);
+  
+  console.log(uniqeGameText);
+  
+  let counter = 0;
+  const maxGameIteration = 3;
+  while (counter < maxGameIteration) {
+    const question = getQuestion();
+    console.log(`Question: ${question[0]}`);
+    const questionAnswer = getQuestionAnswer(question);
+    const userAnswer = readlineSync.question('Your answer: ');
+    if (userAnswer === questionAnswer) {
+      console.log('Correct!');
+      counter += 1;
+    } else {
+      console.log(`${userAnswer} is wrong answer ;(. Correct answer was ${questionAnswer}.
+      Let's try again, ${userName}!`);
+      break;
     }
   }
-  console.log(`Congratulations, ${playerName}!`);
-  return 'Win to the Game';
+  if (counter === maxGameIteration) {
+    console.log(`Congratulations, ${userName}!`);
+  }
 };
 
-export default threeRoundsGame;
+export default getGameCommonPart;
