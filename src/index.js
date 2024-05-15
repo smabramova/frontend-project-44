@@ -7,9 +7,9 @@ const getGameCommonPart = (getQuestionAnswer, getQuestion, uniqeGameText) => {
 
   const userName = getUserName();
   console.log(`Hello, ${userName}!`);
-  
+  // uniqe game text
   console.log(uniqeGameText);
-  
+  // game part
   let counter = 0;
   const maxGameIteration = 3;
   while (counter < maxGameIteration) {
