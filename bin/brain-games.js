@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-import helloUnknownName from '../src/cli.js';
+import nameOfUser from '../src/cli.js';
 
-helloUnknownName();
+brainGames();
